@@ -1,0 +1,6 @@
+@hostAdress = http://localhost:5043/api
+
+GET {{hostAdress}}/weatherforecast/
+Accept: application/json
+###
+GET {{hostAdress}}/products/2
