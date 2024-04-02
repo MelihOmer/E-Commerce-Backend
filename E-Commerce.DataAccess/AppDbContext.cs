@@ -1,7 +1,7 @@
-﻿using E_Commerce.Entities.DbEntities;
+﻿using E_Commerce.Core.DbEntities;
 using Microsoft.EntityFrameworkCore;
 
-namespace E_Commerce.DataAccess
+namespace E_Commerce.Infrastructure
 {
     public class AppDbContext : DbContext
     {
@@ -10,5 +10,7 @@ namespace E_Commerce.DataAccess
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<ProductBrand> ProductBrands { get; set; }
     }
 }

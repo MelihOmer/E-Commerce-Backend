@@ -1,6 +1,5 @@
-﻿using E_Commerce.DataAccess;
+﻿using E_Commerce.Service.Abstract;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace E_Commerce.Api.Controllers
 {
@@ -8,22 +7,25 @@ namespace E_Commerce.Api.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        readonly AppDbContext _context;
 
-        public ProductsController(AppDbContext context)
+        readonly IProductService _productService;
+
+        public ProductsController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var datas = await _context.Products.ToListAsync();
+            var datas = await _productService.GetAllAsync();
             return Ok(datas);
         }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProduct(int id)
         {
-            var data = await _context.Products.SingleOrDefaultAsync(x => x.Id == id);
+            var data = await _productService.GetByIdAsync(id);
             return Ok(data);
         }
     }

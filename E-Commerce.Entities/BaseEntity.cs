@@ -1,4 +1,4 @@
-﻿namespace E_Commerce.Entities
+﻿namespace E_Commerce.Core
 {
     public class BaseEntity
     {
