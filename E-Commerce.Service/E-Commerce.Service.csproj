@@ -4,8 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>E_Commerce.Service</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\E-Commerce.DataAccess\E-Commerce.Infrastructure.csproj" />
