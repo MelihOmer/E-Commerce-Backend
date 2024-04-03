@@ -1,4 +1,8 @@
-﻿namespace E_Commerce.Core
+﻿
+
+using System.Text.Json.Serialization;
+
+namespace E_Commerce.Core
 {
     public class BaseEntity
     {

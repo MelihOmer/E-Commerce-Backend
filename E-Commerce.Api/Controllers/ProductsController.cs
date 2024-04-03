@@ -18,14 +18,14 @@ namespace E_Commerce.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var datas = await _productService.GetAllAsync();
+            var datas = await _productService.GetProductsWithTypeAndBrandAsync();
             return Ok(datas);
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProduct(int id)
         {
-            var data = await _productService.GetByIdAsync(id);
+            var data = await _productService.GetProductByIdWithTypeAndBrandAsync(id);
             return Ok(data);
         }
     }

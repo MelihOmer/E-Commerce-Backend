@@ -1,6 +1,8 @@
 ﻿using E_Commerce.Core;
 using E_Commerce.Core.Abstracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Linq.Expressions;
 
 namespace E_Commerce.Infrastructure.Concretes
 {
@@ -12,17 +14,39 @@ namespace E_Commerce.Infrastructure.Concretes
         {
             _context = context;
         }
-
+        private DbSet<T> Table => _context.Set<T>();
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-            var datas = await _context.Set<T>().ToListAsync();
-            return datas;
+            return await Table.ToListAsync();
         }
-
         public async Task<T> GetByIdAsync(int id)
         {
-            var data =await _context.Set<T>().SingleOrDefaultAsync(t => t.Id == id);
-            return data;
+            return await Table.SingleOrDefaultAsync(t => t.Id == id);
+        }
+        public async Task<IReadOnlyList<T>> GetAllWithWhereAndIncludesAsync(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = Table;
+            query = filter is not null ? query.Where(filter) : query;
+
+            if(includeProperties is not null)
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
+            return await query.ToListAsync();
+        }
+
+        public async Task<T> GetEntityWithWhereAndIncludesAsync(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = Table;
+            query = filter is not null ? query.Where(filter) : query;
+
+            if (includeProperties is not null)
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
+            return await query.FirstOrDefaultAsync();
         }
     }
 }
