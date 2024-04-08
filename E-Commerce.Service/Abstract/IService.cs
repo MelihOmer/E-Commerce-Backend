@@ -1,4 +1,6 @@
 ﻿using E_Commerce.Core;
+using E_Commerce.Core.Enums;
+using E_Commerce.Service.Helpers;
 using System.Linq.Expressions;
 
 namespace E_Commerce.Service.Abstract
@@ -7,7 +9,8 @@ namespace E_Commerce.Service.Abstract
     {
         Task<T> GetByIdAsync(int id);
         Task<IReadOnlyList<T>> GetAllAsync();
-        Task<IReadOnlyList<T>> GetAllWithWhereAndIncludesAsync(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includeProperties);
+        Task<int> GetCountAsync();
+        Task<IReadOnlyList<T>> GetAllWithWhereAndIncludesAsync(RequestParameters requestParameters,Expression<Func<T, object>>[] orderByProperties = null, OrderBy orderBy = OrderBy.None, Expression<Func<T, bool>>[] filter = null, params Expression<Func<T, object>>[] includeProperties);
         Task<T> GetEntityWithWhereAndIncludesAsync(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includeProperties);
     }
 }
