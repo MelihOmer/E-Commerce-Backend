@@ -10,6 +10,8 @@ namespace E_Commerce.Service.Extensions
         public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IProductService,ProductService>();
+            services.AddScoped<IBrandService,BrandService>();
+            services.AddScoped<IProductTypeService,ProductTypeService>();
             services.AddAutoMapper(typeof(MappingProfiles));
         }
     }

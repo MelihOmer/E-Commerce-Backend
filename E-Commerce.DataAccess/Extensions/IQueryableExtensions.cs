@@ -12,7 +12,7 @@ namespace E_Commerce.Infrastructure.Extensions
           query = query.Skip((requestParameters.PageNumber - 1) * requestParameters.PageSize)
                 .Take(requestParameters.PageSize);
             
-            return query.AsQueryable();
+            return query;
         }
         public static IQueryable<T> ApplyOrderBy<T>(this IQueryable<T> query, OrderBy orderBy, Expression<Func<T, object>>[] orderByProperties)
         {
@@ -22,6 +22,7 @@ namespace E_Commerce.Infrastructure.Extensions
                     break;
                 case OrderBy.Ascending:
                     IOrderedQueryable<T> orderedAscList = query.OrderBy(orderByProperties.First());
+                    query = orderedAscList;
                     for (int i = 1; i < orderByProperties.Count(); i++)
                     {
                         query = orderedAscList.ThenBy(orderByProperties[i]);
@@ -29,6 +30,7 @@ namespace E_Commerce.Infrastructure.Extensions
                     break;
                 case OrderBy.Descending:
                     IOrderedQueryable<T> orderedDescList = query.OrderByDescending(orderByProperties.First());
+                    query = orderedDescList;
                     for (int i = 1; i < orderByProperties.Count(); i++)
                     {
                         query = orderedDescList.ThenByDescending(orderByProperties[i]);
@@ -41,6 +43,7 @@ namespace E_Commerce.Infrastructure.Extensions
         }
         public static IQueryable<T> ApplyIncludeProperties<T>(this IQueryable<T> query, params Expression<Func<T, object>>[] includeProperties) where T : class
         {
+            if (includeProperties is not null)
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);
@@ -49,6 +52,7 @@ namespace E_Commerce.Infrastructure.Extensions
         }
         public static IQueryable<T> ApplyWhere<T>(this IQueryable<T> query, Expression<Func<T, bool>>[] predicates)
         {
+            if (predicates is not null)
             foreach (var item in predicates)
             {
                 query = query.Where(item);

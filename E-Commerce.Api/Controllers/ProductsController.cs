@@ -1,4 +1,5 @@
 ﻿using E_Commerce.Core.Enums;
+using E_Commerce.Core.Helpers;
 using E_Commerce.Service.Abstract;
 using E_Commerce.Service.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,9 @@ namespace E_Commerce.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts([FromQuery]RequestParameters requestParameters)
+        public async Task<IActionResult> GetProducts([FromQuery]RequestParameters requestParameters,[FromQuery]ProductParemeters productParemeters)
         {
-            var datas = await _productService.GetProductsWithTypeAndBrandAsync(requestParameters:requestParameters,orderByProperties: [x => x.ProductTypeId,x => x.Id],
-                orderBy: OrderBy.Descending, filter: [(x=>  x.ProductTypeId ==2 ||x.ProductTypeId==3 )]);
+            var datas = await _productService.GetProductsWithTypeAndBrandAsync(requestParameters: requestParameters, filter:productParemeters.Filter,orderBy:productParemeters.OrderBy,orderByProperties:productParemeters.SortByExpression);
 
             return Ok(datas);
         }

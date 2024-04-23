@@ -28,19 +28,16 @@ namespace E_Commerce.Infrastructure.Concretes
         public async Task<int> CountAsync()=> await Table.CountAsync();
         public async Task<IReadOnlyList<T>> GetAllWithWhereAndIncludesAsync(RequestParameters requestParameters, Expression<Func<T,object>>[] orderByProperties = null,OrderBy orderBy = OrderBy.None, Expression<Func<T, bool>>[] filter = null, params Expression<Func<T, object>>[] includeProperties)
         {
-
             IQueryable<T> query = Table;
-            //query = filter is not null ? query.Where(filter) : query;
-            //query = query
-            //    .ApplyOrderBy(orderBy,orderByProperties)
-            //    .ApplyIncludeProperties(includeProperties)
-            //    .ApplyPagination(requestParameters);
             query = query
                 .ApplyWhere(filter)
                 .ApplyOrderBy(orderBy, orderByProperties)
                 .ApplyIncludeProperties(includeProperties)
                 .ApplyPagination(requestParameters);
             return await query.ToListAsync();
+
+
+            
         }
 
         public async Task<T> GetEntityWithWhereAndIncludesAsync(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includeProperties)
@@ -82,26 +79,31 @@ namespace E_Commerce.Infrastructure.Concretes
 
 
 
-        //private  IQueryable<T> ApplyIncludeProperties(IQueryable<T> query ,params Expression<Func<T, object>>[] includeProperties)
+        //private IQueryable<T> ApplyIncludeProperties(IQueryable<T> query, params Expression<Func<T, object>>[] includeProperties)
         //{
 
-        //        foreach (var includeProperty in includeProperties)
-        //        {
-        //            query = query.Include(includeProperty);
-        //        }
+        //    foreach (var includeProperty in includeProperties)
+        //    {
+        //        query = query.Include(includeProperty);
+        //    }
         //    return query;
         //}
 
 
 
-        //private async Task<IQueryable<T>> ApplyPagination(IQueryable<T> query,RequestParameters requestParameters)
+        //private async Task<IQueryable<T>> ApplyPagination(IQueryable<T> query, RequestParameters requestParameters)
         //{
         //    await Task.Run(() =>
         //    {
-        //       query =  query.Skip((requestParameters.PageNumber - 1) * requestParameters.PageSize)
-        //        .Take(requestParameters.PageSize);
+        //        query = query.Skip((requestParameters.PageNumber - 1) * requestParameters.PageSize)
+        //         .Take(requestParameters.PageSize);
         //    });
         //    return query;
         //}
     }
 }
+//query = filter is not null ? query.Where(filter) : query;
+//query = query
+//    .ApplyOrderBy(orderBy,orderByProperties)
+//    .ApplyIncludeProperties(includeProperties)
+//    .ApplyPagination(requestParameters);
