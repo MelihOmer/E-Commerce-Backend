@@ -18,7 +18,7 @@ namespace E_Commerce.Service.Concrete
             _mapper = mapper;
         }
 
-        public async Task<PaginationResultWithInfoAndData<ProductResultDto>> GetProductsWithTypeAndBrandAsync(RequestParameters requestParameters,Expression<Func<Product, object>>[] orderByProperties = null,Expression<Func<Product, bool>>[] filter = null,OrderBy orderBy = OrderBy.None)
+        public async Task<PaginationResultWithInfoAndData<ProductResultDto>> GetProductsWithTypeAndBrandAsync(RequestParameters requestParameters,Expression<Func<Product, object>>[] orderByProperties = null,Expression<Func<Product, bool>>[]? filter = null,OrderBy orderBy = OrderBy.None)
         {
             int count = await GetCountAsync();
             var data = await GetAllWithWhereAndIncludesAsync(requestParameters, orderByProperties, orderBy, filter, x => x.ProductBrand, x => x.ProductType);
