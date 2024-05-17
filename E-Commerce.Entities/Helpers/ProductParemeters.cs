@@ -10,6 +10,7 @@ namespace E_Commerce.Core.Helpers
         private string _sortBy;
         private int _brandId;
         private int _typeId;
+        private string _searchTerm;
         private Expression<Func<Product, bool>>[] _filter;
         private Expression<Func<Product, object>>[] _sortByExpression;
 
@@ -23,13 +24,17 @@ namespace E_Commerce.Core.Helpers
             get { return _sortBy; }
             set { _sortBy = value;GenerateOrderBy(); }
         }
-
+        
         public Expression<Func<Product, object>>[] SortByExpression
         {
             get {return _sortByExpression; }
             set { _sortByExpression = value; }
         }
-
+        public string SearchTerm
+        {
+            get { return _searchTerm; }
+            set { _searchTerm = value; GenerateFilter(); }
+        }
 
         public int BrandId
         {
@@ -49,21 +54,14 @@ namespace E_Commerce.Core.Helpers
 
         private void GenerateFilter()
         {
-            switch(true)
-            {
-                case var _ when BrandId!=0 && TypeId!=0:
-                    _filter = [x => x.ProductTypeId == TypeId & x.ProductBrandId == BrandId];
-                    break;
-                case var _ when BrandId != 0:
-                    _filter = [x => x.ProductBrandId == BrandId];
-                    break;
-                case var _ when TypeId != 0:
-                    _filter = [x => x.ProductTypeId == TypeId];
-                    break;
-                default:
-                    _filter = Array.Empty<Expression<Func<Product, bool>>>();
-                    break;
-            }
+            var filters = new List<Expression<Func<Product, bool>>>();
+            if (BrandId > 0)
+                filters.Add(x => x.ProductBrandId == BrandId);
+            if (TypeId > 0)
+                filters.Add(x => x.ProductTypeId == TypeId);
+            if (!String.IsNullOrEmpty(SearchTerm))
+               filters.Add(x => x.Title.Contains(SearchTerm) || x.Description.Contains(SearchTerm));
+            _filter = filters.ToArray();
         }
         private void GenerateOrderBy()
         {

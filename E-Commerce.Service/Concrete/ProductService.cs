@@ -20,7 +20,7 @@ namespace E_Commerce.Service.Concrete
 
         public async Task<PaginationResultWithInfoAndData<ProductResultDto>> GetProductsWithTypeAndBrandAsync(RequestParameters requestParameters,Expression<Func<Product, object>>[] orderByProperties = null,Expression<Func<Product, bool>>[]? filter = null,OrderBy orderBy = OrderBy.None)
         {
-            int count = await GetCountAsync();
+            int count = await GetCountWithApplyFilterAsync(filter);
             var data = await GetAllWithWhereAndIncludesAsync(requestParameters, orderByProperties, orderBy, filter, x => x.ProductBrand, x => x.ProductType);
             var mappList = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductResultDto>>(data);
 
@@ -30,9 +30,11 @@ namespace E_Commerce.Service.Concrete
 
             return result;
         }
-        public async Task<Product> GetProductByIdWithTypeAndBrandAsync(int id)
+        public async Task<ProductResultDto> GetProductByIdWithTypeAndBrandAsync(int id)
         {
-            return await GetEntityWithWhereAndIncludesAsync(x => x.Id == id, x => x.ProductBrand, x => x.ProductType);
+            var data =await GetEntityWithWhereAndIncludesAsync([x => x.Id == id], x => x.ProductBrand, x => x.ProductType);
+            var mappingData = _mapper.Map<Product,ProductResultDto>(data);
+            return mappingData;
         }
     }
 }
