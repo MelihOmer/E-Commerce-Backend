@@ -10,6 +10,6 @@ namespace E_Commerce.Service.Abstract
     public interface IProductService : IService<Product>
     {
         Task<PaginationResultWithInfoAndData<ProductResultDto>> GetProductsWithTypeAndBrandAsync(RequestParameters requestParameters, Expression<Func<Product, object>>[] orderByProperties = null, Expression<Func<Product, bool>>[] filter = null, OrderBy orderBy = OrderBy.None);
-        Task<Product> GetProductByIdWithTypeAndBrandAsync(int id);
+        Task<ProductResultDto> GetProductByIdWithTypeAndBrandAsync(int id);
     }
 }

@@ -9,8 +9,8 @@ namespace E_Commerce.Service.Abstract
     {
         Task<T> GetByIdAsync(int id);
         Task<IReadOnlyList<T>> GetAllAsync();
-        Task<int> GetCountAsync();
+        Task<int> GetCountWithApplyFilterAsync(Expression<Func<T, bool>>[] filter = null);
         Task<IReadOnlyList<T>> GetAllWithWhereAndIncludesAsync(RequestParameters requestParameters,Expression<Func<T, object>>[] orderByProperties = null, OrderBy orderBy = OrderBy.None, Expression<Func<T, bool>>[] filter = null, params Expression<Func<T, object>>[] includeProperties);
-        Task<T> GetEntityWithWhereAndIncludesAsync(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includeProperties);
+        Task<T> GetEntityWithWhereAndIncludesAsync(Expression<Func<T, bool>>[] filter = null, params Expression<Func<T, object>>[] includeProperties);
     }
 }
